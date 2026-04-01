@@ -1,0 +1,8 @@
+square:
+    dup; *;
+
+main:
+    5 3 add; out;
+    5 square; out;
+    "this is a hello world typa thing btw" (and this a comment)
+    out;
