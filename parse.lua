@@ -8,8 +8,8 @@ end
 ---parses the tokens
 ---@param tokens {type: number, value: string|number}[]
 local parse = function(tokens)
-    local dictionary = {}
-    local cur_procedure
+    local dictionary = { main = {} }
+    local cur_procedure = dictionary["main"]
     local i = 1
     while i <= #tokens do
         local cur_token = tokens[i]
