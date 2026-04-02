@@ -7,5 +7,6 @@ main:
     5 3 add; out;
     5 square; out;
     "this is a hello world typa thing btw" (and this a comment)
+    these out; are out; also out; strings; i out; guess out;
     out;
     my_const; square; out;

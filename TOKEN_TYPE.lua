@@ -2,8 +2,9 @@
 local TOKEN_TYPE = {
     IDENTIFIER = 1,
     NUMBER = 2,
-    PROCEDURE_MARKER = 3,
-    EXECUTE = 4
+    TEXT = 3,
+    PROCEDURE_MARKER = 4,
+    EXECUTE = 5
 }
 
 return TOKEN_TYPE

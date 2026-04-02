@@ -22,7 +22,7 @@ local tokenize = function(source)
         if char == "\"" then
             local next_quote_index = source:find("\"", i + 1)
             token_value = source:sub(i + 1, next_quote_index - 1)
-            token_type = TOKEN_TYPE.IDENTIFIER
+            token_type = TOKEN_TYPE.TEXT
             i = next_quote_index + 1
         elseif char == "(" then
             local paran_close_index = source:find(")", i + 1)

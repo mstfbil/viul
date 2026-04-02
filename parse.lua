@@ -6,7 +6,7 @@ for key, value in pairs(TOKEN_TYPE) do
 end
 
 ---parses the tokens
----@param tokens {type: number, value: string}[]
+---@param tokens {type: number, value: string|number}[]
 local parse = function(tokens)
     local dictionary = {}
     local cur_procedure
