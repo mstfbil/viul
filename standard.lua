@@ -47,6 +47,31 @@ std[">"] = function(stack)
     table.insert(stack, (a > b) and 1 or 0)
 end
 
+std["<="] = function(stack)
+    local a, b = popTwo(stack)
+    table.insert(stack, (a <= b) and 1 or 0)
+end
+
+std[">="] = function(stack)
+    local a, b = popTwo(stack)
+    table.insert(stack, (a >= b) and 1 or 0)
+end
+
+std["&"] = function(stack)
+    local a, b = popTwo(stack)
+    table.insert(stack, ((a == 1) and (b == 1)) and 1 or 0)
+end
+
+std["|"] = function(stack)
+    local a, b = popTwo(stack)
+    table.insert(stack, ((a == 1) or (b == 1)) and 1 or 0)
+end
+
+std["^"] = function(stack)
+    local a, b = popTwo(stack)
+    table.insert(stack, ((a == 1) and (b == 0) or (a == 0) and (b == 1)) and 1 or 0)
+end
+
 std["~"] = function(stack)
     local a = table.remove(stack)
     table.insert(stack, (a == 0) and 1 or 0)
@@ -74,6 +99,16 @@ std[".."] = function(stack)
     if a then
         table.insert(stack, a)
     end
+end
+
+std["!"] = function(stack)
+    table.remove(stack)
+end
+
+std["%"] = function(stack)
+    local a, b = popTwo(stack)
+    table.insert(stack, b)
+    table.insert(stack, a)
 end
 
 return std
