@@ -1,8 +1,11 @@
 square:
     dup; *;
 
+my_const: 7
+
 main:
     5 3 add; out;
     5 square; out;
     "this is a hello world typa thing btw" (and this a comment)
     out;
+    my_const; square; out;

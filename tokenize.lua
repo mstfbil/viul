@@ -1,11 +1,4 @@
----@enum TOKEN_TYPE
-TOKEN_TYPE = {
-    IDENTIFIER = 1,
-    NUMBER = 2,
-    STRING = 3,
-    PROCEDURE_MARKER = 4,
-    EXECUTE = 5
-}
+local TOKEN_TYPE = require("TOKEN_TYPE")
 
 ---tokenizes the input viul code
 ---@param source string
@@ -29,8 +22,11 @@ local tokenize = function(source)
         if char == "\"" then
             local next_quote_index = source:find("\"", i + 1)
             token_value = source:sub(i + 1, next_quote_index - 1)
-            token_type = TOKEN_TYPE.STRING
+            token_type = TOKEN_TYPE.IDENTIFIER
             i = next_quote_index + 1
+        elseif char == "(" then
+            local paran_close_index = source:find(")", i + 1)
+            i = paran_close_index + 1
         elseif char == ":" then
             token_value = ":"
             token_type = TOKEN_TYPE.PROCEDURE_MARKER
@@ -55,9 +51,10 @@ local tokenize = function(source)
 
         if token_type then
             table.insert(tokens, { type = token_type, value = token_value })
-            print(string.format("Val: %-12s | Type: %d", tostring(token_value), token_type))
         end
     end
+
+    return tokens
 end
 
 return tokenize
