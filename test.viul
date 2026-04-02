@@ -1,12 +1,8 @@
-square:
-    ..; *;
-
-my_const: 7
-
 main:
-    5 3 +; >;
-    5 square; >;
-    "this is a hello world typa thing btw" (and this a comment)
-    these >; are >; also >; strings >; i >; guess >;
-    >;
-    my_const; square; >;
+    3 3 =
+    {
+        "helo" .
+    }
+    {
+        "nothelo" .
+    } ?? ;

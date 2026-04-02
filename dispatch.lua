@@ -24,15 +24,23 @@ local dispatch = function(dict, entry)
             goto continue
         end
 
-        if cur_token.type == TOKEN_TYPE.NUMBER or cur_token.type == TOKEN_TYPE.TEXT or cur_token.type == TOKEN_TYPE.IDENTIFIER then
+        if cur_token.type == TOKEN_TYPE.NUMBER or cur_token.type == TOKEN_TYPE.TEXT or cur_token.type == TOKEN_TYPE.BLOCK then
             table.insert(data_stack, cur_token.value)
+        elseif cur_token.type == TOKEN_TYPE.IDENTIFIER then
+            local identifier = cur_token.value
+            if std[identifier] then
+                std[identifier](data_stack, call_stack, dict)
+            else
+                table.insert(data_stack, identifier)
+            end
         elseif cur_token.type == TOKEN_TYPE.EXECUTE then
             local identifier = table.remove(data_stack)
-
-            if dict[identifier] then
+            if type(identifier) == "table" then
+                table.insert(call_stack, { tokens = identifier, ip = 1 })
+            elseif dict[identifier] then
                 table.insert(call_stack, { tokens = dict[identifier], ip = 1 })
             elseif std[identifier] then
-                std[identifier](data_stack)
+                std[identifier](data_stack, call_stack)
             end
         end
 

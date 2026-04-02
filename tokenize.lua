@@ -2,7 +2,7 @@ local TOKEN_TYPE = require("TOKEN_TYPE")
 
 ---tokenizes the input viul code
 ---@param source string
-local tokenize = function(source)
+local function tokenize(source)
     local i = 1
     local tokens = {}
 
@@ -27,6 +27,12 @@ local tokenize = function(source)
         elseif char == "(" then
             local paran_close_index = source:find(")", i + 1)
             i = paran_close_index + 1
+        elseif char == "{" then
+            local brace_close_index = source:find("}", i + 1)
+            local block_source = source:sub(i + 1, brace_close_index - 1)
+            token_value = tokenize(block_source)
+            token_type = TOKEN_TYPE.BLOCK
+            i = brace_close_index + 1
         elseif char == ":" then
             token_value = ":"
             token_type = TOKEN_TYPE.PROCEDURE_MARKER
