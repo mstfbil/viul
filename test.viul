@@ -1,12 +1,12 @@
 square:
-    dup; *;
+    ..; *;
 
 my_const: 7
 
 main:
-    5 3 add; out;
-    5 square; out;
+    5 3 +; >;
+    5 square; >;
     "this is a hello world typa thing btw" (and this a comment)
-    these out; are out; also out; strings; i out; guess out;
-    out;
-    my_const; square; out;
+    these >; are >; also >; strings >; i >; guess >;
+    >;
+    my_const; square; >;
