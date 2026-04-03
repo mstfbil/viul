@@ -1,10 +1,5 @@
 local TOKEN_TYPE = require("TOKEN_TYPE")
 
-local type_name = {}
-for key, value in pairs(TOKEN_TYPE) do
-    type_name[value] = key
-end
-
 ---parses the tokens
 ---@param tokens {type: number, value: string|number}[]
 local parse = function(tokens)

@@ -1,8 +1,2 @@
-main:
-    3 3 =
-    {
-        "helo" .
-    }
-    {
-        "nothelo" .
-    } ?? ;
+5 5 + 10 = { equal -> } ?;
+equal: "equal" .

@@ -1,31 +1,49 @@
 -- viul standard vocabulary
 
+local TOKEN_TYPE = require("TOKEN_TYPE")
+
 local std = {}
 
-local function popTwo(stack)
-    local b = table.remove(stack)
-    local a = table.remove(stack)
-    return a, b
+local function pop(stack, n)
+    local popped = {}
+    for i = 1, n do
+        local m = table.remove(stack)
+        if not m then
+            break
+        end
+        table.insert(popped, m)
+    end
+    return popped
 end
 
 std["+"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, a + b)
+    local s = pop(stack, 2)
+    table.insert(stack, s[2] + s[1])
+end
+
+std["++"] = function(stack)
+    local a = table.remove(stack)
+    table.insert(stack, a + 1)
 end
 
 std["-"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, a - b)
+    local s = pop(stack, 2)
+    table.insert(stack, s[2] - s[1])
+end
+
+std["--"] = function(stack)
+    local a = table.remove(stack)
+    table.insert(stack, a - 1)
 end
 
 std["*"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, a * b)
+    local s = pop(stack, 2)
+    table.insert(stack, s[2] * s[1])
 end
 
 std["/"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, a / b)
+    local s = pop(stack, 2)
+    table.insert(stack, s[2] / s[1])
 end
 
 std["."] = function(stack)
@@ -33,43 +51,43 @@ std["."] = function(stack)
 end
 
 std["="] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, (a == b) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, (s[2] == s[1]) and 1 or 0)
 end
 
 std["<"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, (a < b) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, (s[2] < s[1]) and 1 or 0)
 end
 
 std[">"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, (a > b) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, (s[2] > s[1]) and 1 or 0)
 end
 
 std["<="] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, (a <= b) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, (s[2] <= s[1]) and 1 or 0)
 end
 
 std[">="] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, (a >= b) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, (s[2] >= s[1]) and 1 or 0)
 end
 
 std["&"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, ((a == 1) and (b == 1)) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, ((s[2] == 1) and (s[1] == 1)) and 1 or 0)
 end
 
 std["|"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, ((a == 1) or (b == 1)) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, ((s[2] == 1) or (s[1] == 1)) and 1 or 0)
 end
 
 std["^"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, ((a == 1) and (b == 0) or (a == 0) and (b == 1)) and 1 or 0)
+    local s = pop(stack, 2)
+    table.insert(stack, ((s[2] == 1) and (s[1] == 0) or (s[2] == 0) and (s[1] == 1)) and 1 or 0)
 end
 
 std["~"] = function(stack)
@@ -77,21 +95,26 @@ std["~"] = function(stack)
     table.insert(stack, (a == 0) and 1 or 0)
 end
 
-std["?"] = function(stack, call_stack)
-    local condition, block = popTwo(stack)
+std["?"] = function(stack)
+    local s = pop(stack, 2)
 
-    if condition ~= 0 then
-        table.insert(stack, block)
+    if s[2] ~= 0 then
+        table.insert(stack, s[1])
     end
 end
 
-std["??"] = function(stack, call_stack)
-    local false_block = table.remove(stack)
-    local true_block = table.remove(stack)
-    local condition = table.remove(stack)
+std["??"] = function(stack)
+    local s = pop(stack, 3)
 
-    local block = (condition ~= 0) and true_block or false_block
+    local block = (s[3] ~= 0) and s[2] or s[1]
     table.insert(stack, block)
+end
+
+std["->"] = function(stack, call_stack, dict)
+    local a = table.remove(stack)
+    if dict[a] then
+        call_stack[#call_stack] = { tokens = dict[a], ip = 1 }
+    end
 end
 
 std[".."] = function(stack)
@@ -106,9 +129,9 @@ std["!"] = function(stack)
 end
 
 std["%"] = function(stack)
-    local a, b = popTwo(stack)
-    table.insert(stack, b)
-    table.insert(stack, a)
+    local s = pop(stack, 2)
+    table.insert(stack, s[1])
+    table.insert(stack, s[2])
 end
 
 return std

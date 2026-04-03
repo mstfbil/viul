@@ -3,7 +3,7 @@ local std = require("standard")
 
 ---dispatches from the dict
 ---@param dict {[string]: {type: number, value: string|number}[]}
-local dispatch = function(dict, entry)
+local dispatch = function(dict, entry, data_stack)
     if not dict[entry] then
         return
     end
@@ -39,8 +39,6 @@ local dispatch = function(dict, entry)
                 table.insert(call_stack, { tokens = identifier, ip = 1 })
             elseif dict[identifier] then
                 table.insert(call_stack, { tokens = dict[identifier], ip = 1 })
-            elseif std[identifier] then
-                std[identifier](data_stack, call_stack)
             end
         end
 
