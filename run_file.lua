@@ -2,7 +2,7 @@ local tokenize = require("tokenize")
 local parse    = require("parse")
 local dispatch = require("dispatch")
 
-local handle   = io.open("./test.viul", "r")
+local handle   = io.open(arg[1], "r")
 if not handle then return end
 
 local tokens = tokenize(handle:read("a"))
