@@ -41,6 +41,13 @@ local function tokenize(source)
             token_value = ";"
             token_type = TOKEN_TYPE.EXECUTE
             i = i + 1
+        elseif char == "@" then
+            local next_space_index = source:find("%s", i + 1)
+            local marker_name = ""
+            marker_name = source:sub(i + 1, next_space_index - 1)
+            token_value = marker_name
+            token_type = TOKEN_TYPE.MARKER
+            i = next_space_index + 1
         else
             local next_break = source:find("[%s:;\"]", i) or (#source + 1)
             token_value = source:sub(i, next_break - 1)

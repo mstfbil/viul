@@ -6,7 +6,7 @@ local TOKEN_TYPE = {
     PROCEDURE_MARKER = 4,
     EXECUTE = 5,
     BLOCK = 6,
-    LOOP_BLOCK = 7
+    MARKER = 7
 }
 
 return TOKEN_TYPE

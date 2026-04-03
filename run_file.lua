@@ -7,5 +7,5 @@ if not handle then return end
 
 local tokens = tokenize(handle:read("a"))
 handle:close()
-local dict = parse(tokens)
-dispatch(dict, "main")
+local dict, markers = parse(tokens)
+dispatch(dict, markers, "main")

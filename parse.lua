@@ -5,6 +5,7 @@ local TOKEN_TYPE = require("TOKEN_TYPE")
 local parse = function(tokens)
     local dictionary = { main = {} }
     local cur_procedure = dictionary["main"]
+    local markers = {}
     local i = 1
     while i <= #tokens do
         local cur_token = tokens[i]
@@ -15,13 +16,17 @@ local parse = function(tokens)
             dictionary[cur_token.value] = new_procedure
             cur_procedure = new_procedure
             i = i + 2
+        elseif cur_token.type == TOKEN_TYPE.MARKER then
+            local marker_location = #cur_procedure + 1
+            table.insert(markers, { procedure = cur_procedure, location = marker_location })
+            i = i + 1
         else
             table.insert(cur_procedure, cur_token)
             i = i + 1
         end
     end
 
-    return dictionary
+    return dictionary, markers
 end
 
 return parse

@@ -3,7 +3,7 @@ local std = require("standard")
 
 ---dispatches from the dict
 ---@param dict {[string]: {type: number, value: string|number}[]}
-local dispatch = function(dict, entry, data_stack)
+local dispatch = function(dict, markers, entry, data_stack)
     if not dict[entry] then
         return
     end
@@ -29,7 +29,7 @@ local dispatch = function(dict, entry, data_stack)
         elseif cur_token.type == TOKEN_TYPE.IDENTIFIER then
             local identifier = cur_token.value
             if std[identifier] then
-                std[identifier](data_stack, call_stack, dict)
+                std[identifier](data_stack, call_stack, dict, markers)
             else
                 table.insert(data_stack, identifier)
             end

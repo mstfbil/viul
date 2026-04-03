@@ -117,6 +117,32 @@ std["->"] = function(stack, call_stack, dict)
     end
 end
 
+std["<-"] = function(_, call_stack, dict, markers)
+    for frame_index = #call_stack, 1, -1 do
+        local frame = call_stack[frame_index]
+        local best_marker = nil
+
+        for _, marker in ipairs(markers) do
+            if marker.procedure == frame.tokens then
+                if marker.location <= frame.ip then
+                    if not best_marker or marker.location > best_marker.location then
+                        best_marker = marker
+                    end
+                end
+            end
+        end
+
+        if best_marker then
+            while #call_stack > frame_index do
+                table.remove(call_stack)
+            end
+
+            frame.ip = best_marker.location
+            return
+        end
+    end
+end
+
 std[".."] = function(stack)
     local a = stack[#stack]
     if a then
